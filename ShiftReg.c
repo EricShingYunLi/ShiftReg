@@ -19,7 +19,7 @@ Usage: 	Meant for use with the 74HC595 serial out/parallel out shift register.
 	#error Defines for SHIFTREG_SH_CP_PORT or SHIFTREG_SH_CP_PIN is not defined.
 #endif
 
-//Macros/Variable Defines
+//Macros
 #define _BV(bit) (1 << (bit)) //Bit value
 #define DDR(port) (*(&port - 1)) //Data direction register
 
@@ -29,7 +29,8 @@ Usage: 	Meant for use with the 74HC595 serial out/parallel out shift register.
 static inline void clockPulse(){
 	SHIFTREG_SH_CP_PORT |= _BV(SHIFTREG_SH_CP_PIN);
 	#if F_CPU > 200000000
-		Delay_ns(75);
+		Delay_ns(75); //delay ensures pulse width meets min specs
+		//this delay is only necessary for high-speed MCUs
 	#endif
 	SHIFTREG_SH_CP_PORT &= ~_BV(SHIFTREG_SH_CP_PIN);
 }
@@ -42,6 +43,7 @@ static inline void latchPulse(){
 	SHIFTREG_ST_CP_PORT &= ~_BV(SHIFTREG_ST_CP_PIN);
 }
 
+//sets necessary pinouts to output for the microcontroller
 void shiftReg_Init(){
 	DDR(SHIFTREG_DS_PORT) |= _BV(SHIFTREG_DS_PIN);
 	DDR(SHIFTREG_SH_CP_PORT) |= _BV(SHIFTREG_SH_CP_PIN);
@@ -60,10 +62,10 @@ void shiftReg_Write_LSBFIRST(uint8_t data){
 
 void shiftReg_Send(uint8_t data){
 	for(uint8_t i=0; i<8; i++){
-		if(data & 0x01) SHIFTREG_DS_PORT |= _BV(SHIFTREG_DS_PIN);
+		if(data & 0x80) SHIFTREG_DS_PORT |= _BV(SHIFTREG_DS_PIN);
 		else SHIFTREG_DS_PORT &= ~_BV(SHIFTREG_DS_PIN);
 		clockPulse();
-		data >>= 1;
+		data <<= 1;
 	}
 }
 
