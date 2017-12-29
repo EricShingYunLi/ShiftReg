@@ -5,6 +5,7 @@ Date: 12/28/2017
 Usage: 	Meant for use with the 74HC595 serial out/parallel out shift register.
 		Make sure OE is connected to GND and MR is connected to VCC.
 ********************************************************************************/
+#include "avr\pgmspace.h"
 #include "ShiftReg.h"
 
 //Error Checks
