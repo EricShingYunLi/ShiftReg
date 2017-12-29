@@ -23,18 +23,22 @@ Usage: 	Meant for use with the 74HC595 serial out/parallel out shift register.
 #define _BV(bit) (1 << (bit)) //Bit value
 #define DDR(port) (*(&port - 1)) //Data direction register
 
-#define Delay_us(__us) \
-	__builtin_avr_delay_cycles((unsigned long) ( F_CPU/1000000.0 * __us))
-#define Delay_ms(__ms) \
-	__builtin_avr_delay_cycles((unsigned long) ( F_CPU/1000.0 * __ms))
+#define Delay_ns(__ns) \
+	__builtin_avr_delay_cycles((unsigned long) ( F_CPU/1000000000.0 * __ns))
 
 static inline void clockPulse(){
 	SHIFTREG_SH_CP_PORT |= _BV(SHIFTREG_SH_CP_PIN);
+	#if F_CPU > 200000000
+		Delay_ns(75);
+	#endif
 	SHIFTREG_SH_CP_PORT &= ~_BV(SHIFTREG_SH_CP_PIN);
 }
 
 static inline void latchPulse(){
 	SHIFTREG_ST_CP_PORT |= _BV(SHIFTREG_ST_CP_PIN);
+	#if F_CPU > 200000000
+		Delay_ns(75);
+	#endif
 	SHIFTREG_ST_CP_PORT &= ~_BV(SHIFTREG_ST_CP_PIN);
 }
 
