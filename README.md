@@ -1,6 +1,6 @@
 # ShiftReg
 A library for AVR Microcontrollers to use a parallel-out shift register.
-Has been tested on an ATTiny85 with the 74HC595 Shift Register,
+Has been tested on an ATtiny85 with the 74HC595 Shift Register,
 However it should work with any AVR Microcontroller.
 
 ### Pins
