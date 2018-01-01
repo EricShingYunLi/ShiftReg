@@ -78,7 +78,6 @@ void shiftReg_Send_LSBFIRST(uint8_t data){
 	}	
 }
 
-void shiftReg_Latch(uint8_t state){
-	if(state==1) SHIFTREG_ST_CP_PORT |= _BV(SHIFTREG_ST_CP_PIN);
-	else if(state==0) SHIFTREG_ST_CP_PORT &= ~_BV(SHIFTREG_ST_CP_PIN);
+void shiftReg_Latch_Toggle(){
+	SHIFTREG_ST_CP_PORT ^= _BV(SHIFTREG_ST_CP_PIN);
 }

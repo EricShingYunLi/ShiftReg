@@ -57,7 +57,7 @@ void shiftReg_Send(uint8_t data);
 void shiftReg_Send_LSBFIRST(uint8_t data);
 
 //only should be used with shiftReg_Send and shiftReg_Send_LSBFIRST
-//Only takes in 0(LOW) and 1(HIGH) for state
-void shiftReg_Latch(uint8_t state);
+//Toggles latch pin between LOW and HIGH states at each call
+void shiftReg_Latch_Toggle();
 
 #endif
